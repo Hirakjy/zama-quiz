@@ -80,3 +80,25 @@ button:hover {
   color: #ffd700;
   margin-top: 20px;
 }
+
+.result-list {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.result-item {
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.correct {
+  color: #00ff7f;
+}
+
+.wrong {
+  color: #ff4040;
+}
