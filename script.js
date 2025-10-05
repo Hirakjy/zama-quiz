@@ -36,16 +36,17 @@ const scoreDisplay = document.getElementById("score");
 function loadQuiz() {
   const q = quizData[current];
   quizContainer.innerHTML = `
-    <h2>${q.question}</h2>
-    ${q.options.map(opt => `
-      <label><input type="radio" name="answer" value="${opt}"> ${opt}</label><br>
+    <h2>Q${current + 1}. ${q.question}</h2>
+    ${q.options.map((opt, i) => `
+      <label><input type="radio" name="answer" value="${opt}">
+      ${String.fromCharCode(65 + i)}. ${opt}</label>
     `).join('')}
   `;
 }
 
 nextBtn.addEventListener("click", () => {
   const selected = document.querySelector('input[name="answer"]:checked');
-  if (!selected) return alert("Please choose one answer!");
+  if (!selected) return alert("Please select an answer!");
 
   if (selected.value === quizData[current].answer) score++;
   current++;
@@ -55,6 +56,7 @@ nextBtn.addEventListener("click", () => {
   } else {
     quizContainer.innerHTML = `<h2>🎉 You scored ${score}/${quizData.length}</h2>`;
     nextBtn.style.display = "none";
+    scoreDisplay.textContent = "Thanks for playing the Zama Quiz Campaign 1!";
   }
 });
 
