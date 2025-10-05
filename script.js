@@ -28,6 +28,7 @@ const quizData = [
 
 let current = 0;
 let score = 0;
+let userAnswers = [];
 
 const quizContainer = document.getElementById("quiz-container");
 const nextBtn = document.getElementById("next-btn");
@@ -48,16 +49,40 @@ nextBtn.addEventListener("click", () => {
   const selected = document.querySelector('input[name="answer"]:checked');
   if (!selected) return alert("Please select an answer!");
 
-  if (selected.value === quizData[current].answer) score++;
+  const answerValue = selected.value;
+  userAnswers.push(answerValue);
+
+  if (answerValue === quizData[current].answer) score++;
   current++;
 
   if (current < quizData.length) {
     loadQuiz();
   } else {
-    quizContainer.innerHTML = `<h2>🎉 You scored ${score}/${quizData.length}</h2>`;
-    nextBtn.style.display = "none";
-    scoreDisplay.textContent = "Thanks for playing the Zama Quiz Campaign 1!";
+    showResults();
   }
 });
+
+function showResults() {
+  quizContainer.innerHTML = `<h2>🎉 You scored ${score}/${quizData.length}</h2>`;
+
+  const resultDiv = document.createElement("div");
+  resultDiv.classList.add("result-list");
+
+  quizData.forEach((q, index) => {
+    const isCorrect = userAnswers[index] === q.answer;
+    const symbol = isCorrect ? "✅" : "❌";
+    const resultItem = document.createElement("div");
+    resultItem.classList.add("result-item", isCorrect ? "correct" : "wrong");
+    resultItem.innerHTML = `
+      <span>Q${index + 1}. ${q.question}</span>
+      <span>${symbol}</span>
+    `;
+    resultDiv.appendChild(resultItem);
+  });
+
+  quizContainer.appendChild(resultDiv);
+  nextBtn.style.display = "none";
+  scoreDisplay.textContent = "Thanks for playing the Zama Quiz Campaign 1!";
+}
 
 loadQuiz();
