@@ -1,5 +1,10 @@
+// ========================
+// Zama Quiz Campaign 1
+// Full script.js
+// ========================
+
 const quizData = [
-  // 🔸 Old 5 questions (you had earlier)
+  // 🔸 Old 5 questions
   {
     question: "1️⃣ What is Zama primarily focused on developing?",
     options: [
@@ -46,7 +51,7 @@ const quizData = [
     answer: 1
   },
 
-  // 🔸 New 5 questions from Zama Season 3 updates
+  // 🔸 New 5 questions (latest updates)
   {
     question: "6️⃣ What new season did Zama recently launch for its creator program?",
     options: ["A. Season 1", "B. Season 2", "C. Season 3", "D. Season 4"],
@@ -97,6 +102,9 @@ const quiz = document.getElementById("quiz");
 const nextBtn = document.getElementById("next-btn");
 const scoreContainer = document.getElementById("score-container");
 
+// ========================
+// Load current question
+// ========================
 function loadQuestion() {
   const q = quizData[currentQuestion];
   quiz.innerHTML = `
@@ -107,14 +115,19 @@ function loadQuestion() {
   `;
 }
 
+// ========================
+// Select an option
+// ========================
 function selectOption(i) {
   const correct = quizData[currentQuestion].answer;
   const options = document.querySelectorAll(".option");
+  
   options.forEach((opt, index) => {
-    opt.style.pointerEvents = "none";
+    opt.style.pointerEvents = "none"; // prevent multiple clicks
     if (index === correct) opt.style.backgroundColor = "#d9f99d"; // ✅ green
     else if (index === i) opt.style.backgroundColor = "#fecaca"; // ❌ red
   });
+
   if (i === correct) {
     score++;
     results.push({ qNo: currentQuestion + 1, correct: true });
@@ -123,6 +136,9 @@ function selectOption(i) {
   }
 }
 
+// ========================
+// Go to next question
+// ========================
 function nextQuestion() {
   currentQuestion++;
   if (currentQuestion < quizData.length) {
@@ -132,18 +148,37 @@ function nextQuestion() {
   }
 }
 
+// ========================
+// Show final score and share button
+// ========================
 function showScore() {
   quiz.style.display = "none";
   nextBtn.style.display = "none";
+
   let details = results
     .map(r => `${r.qNo}. ${r.correct ? "✅ Correct" : "❌ Wrong"}`)
     .join("<br>");
+
   scoreContainer.innerHTML = `
     <div><b>Your Final Score: ${score}/${quizData.length}</b></div>
     <br>
     <div>${details}</div>
+    <br>
+    <button class="button" id="share-x" onclick="shareOnX()">📤 Share on X</button>
   `;
   scoreContainer.style.display = "block";
 }
 
+// ========================
+// Share score on X (Twitter)
+// ========================
+function shareOnX() {
+  const text = `🎯 I recently completed the Zama quiz and scored ${score}/${quizData.length}! It was a great opportunity to learn more about Zama and explore its innovative ecosystem. @zama_fhe Join Zama quiz https://hirakjy.github.io/zama-quiz/`;
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank");
+}
+
+// ========================
+// Initialize first question
+// ========================
 loadQuestion();
